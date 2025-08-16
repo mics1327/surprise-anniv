@@ -1,32 +1,43 @@
-import React, { useRef, useState } from "react";
-import Timeline from "./Timeline";
-import "./App.css";
-import { FaPlay, FaPause } from "react-icons/fa"; // Import icons
+import React, { useState, useRef } from "react";
+import LandingLetter from "./LandingLetter";
+import TimelinePage from "./TimelinePage";
 
 function App() {
+  const [showTimeline, setShowTimeline] = useState(false);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const handleEnterTimeline = () => setShowTimeline(true);
+  const handleBackToLetter = () => setShowTimeline(false);
+
   const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
+    if (!audioRef.current) return;
+    if (isPlaying) audioRef.current.pause();
+    else audioRef.current.play().catch((err) => console.log("Audio play blocked:", err));
     setIsPlaying(!isPlaying);
   };
 
   return (
-    <div className="app-container">
-      <h1 className="app-title">Our Story</h1>
-      <Timeline />
-      <div className="music-controls">
-        <button onClick={togglePlay}>
-          {isPlaying ? <FaPause /> : <FaPlay />}
-        </button>
-      </div>
+    <>
+      {/* Always render audio so it exists in the DOM */}
       <audio ref={audioRef} src="music.mp3" loop />
-    </div>
+
+      {!showTimeline ? (
+        <LandingLetter
+          onEnter={handleEnterTimeline}
+          audioRef={audioRef}
+          isPlaying={isPlaying}
+          togglePlay={togglePlay}
+        />
+      ) : (
+        <TimelinePage
+          goBack={handleBackToLetter}
+          audioRef={audioRef}
+          isPlaying={isPlaying}
+          togglePlay={togglePlay}
+        />
+      )}
+    </>
   );
 }
 

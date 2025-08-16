@@ -64,7 +64,7 @@ body {
   right: -9px;              /* aligns to rail for left items */
   width: 16px;
   height: 16px;
-  background: #fff;
+  background: #fff;          /* solid white */
   border: 2px solid #bbb;
   border-radius: 50%;
   z-index: 2;
@@ -81,21 +81,40 @@ body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
   padding: 16px 18px 18px;
   overflow: hidden;
-  transition: transform 0.25s ease;
-}
-.timeline-item-content:hover {
-  transform: translateY(-3px);
+  transition: transform 0.25s ease, background 0.8s ease, box-shadow 0.6s ease;
 }
 
-/* ===== Images (supports either .timeline-image or plain img inside card) ===== */
+/* ===== Hidden / Visible Animation ===== */
+.timeline-item.hidden {
+  opacity: 0;
+  transform: translateX(50px); /* default slide-in from right */
+  transition: transform 0.8s ease, opacity 0.8s ease, background 0.8s ease;
+}
+.timeline-item.left.hidden {
+  transform: translateX(-50px);
+}
+
+.timeline-item.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-item.active .timeline-item-content {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  background: #ffeeba; /* soft pop-up color */
+  transition: transform 0.6s ease, box-shadow 0.6s ease, background 0.8s ease;
+}
+
+/* ===== Images ===== */
 .timeline-item-content img,
 .timeline-image {
   width: 100%;
-  max-width: 500px;       /* keep images from getting too wide */
+  max-width: 500px;
   height: auto;
   display: block;
   margin: 0 auto;
-  border-radius: 14px;    /* soft corners; slightly smaller than card */
+  border-radius: 14px;
   filter: grayscale(100%);
   transition: filter 0.4s ease-in-out, transform 0.3s ease-in-out;
 }
@@ -132,46 +151,97 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px; /* for react-icons */
+  font-size: 22px;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
   transition: background 0.25s ease, transform 0.2s ease;
 }
+
 .music-controls button:hover {
   background: rgba(0,0,0,0.88);
   transform: scale(1.08);
 }
 
-/* ===== Mobile (stacked, rail on the left) ===== */
+/* ===== Auto-scroll toggle ===== */
+.scroll-toggle {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.scroll-toggle button {
+  background: rgba(0,0,0,0.72);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.scroll-toggle button:hover {
+  background: rgba(0,0,0,0.88);
+  transform: scale(1.08);
+}
+
+/* ===== Back button ===== */
+.back-button {
+  position: fixed;
+  bottom: 180px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.back-button button {
+  background: rgba(0,0,0,0.72);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.back-button button:hover {
+  background: rgba(0,0,0,0.88);
+  transform: scale(1.08);
+}
+
+/* ===== Mobile (stacked) ===== */
 @media (max-width: 768px) {
   .app-title { font-size: 2.4rem; }
 
-  .timeline::after {
-    left: 24px;            /* move rail to the left */
-    transform: none;
-  }
+  .timeline::after { left: 24px; transform: none; }
 
   .timeline-item {
     width: 100%;
-    left: 0 !important;    /* both sides stack */
-    padding: 16px 16px 16px 64px; /* space for rail/dot on left */
+    left: 0 !important;
+    padding: 16px 16px 16px 64px;
   }
 
-  .timeline-item::before {
-    left: 16px;
-    right: auto;
-  }
+  .timeline-item::before { left: 16px; right: auto; }
 
-  .timeline-item-content {
-    border-radius: 14px;
-  }
+  .timeline-item-content { border-radius: 14px; }
 
   .timeline-item-content img,
-  .timeline-image {
-    max-width: 100%;
-  }
+  .timeline-image { max-width: 100%; }
 
-  .music-controls button {
+  .music-controls button,
+  .scroll-toggle button,
+  .back-button button {
     width: 52px;
     height: 52px;
     font-size: 20px;
