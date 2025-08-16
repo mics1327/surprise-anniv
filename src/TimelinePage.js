@@ -9,13 +9,29 @@ function TimelinePage({ goBack, audioRef, isPlaying, togglePlay }) {
   const toggleAutoScroll = () => setAutoScroll(!autoScroll);
 
   useEffect(() => {
-    let interval;
+    let animationFrameId;
+    let frameCount = 0;
+
+    const step = () => {
+      frameCount++;
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.scrollHeight;
+
+      // Slow scroll: scroll 1px every 3 frames (~20px/sec)
+      if (autoScroll && !scrolledToBottom && frameCount % 3 === 0) {
+        window.scrollBy(0, 1);
+      }
+
+      if (!scrolledToBottom) {
+        animationFrameId = requestAnimationFrame(step);
+      }
+    };
+
     if (autoScroll) {
-      interval = setInterval(() => {
-        window.scrollBy({ top: 1, behavior: "smooth" });
-      }, 20);
+      animationFrameId = requestAnimationFrame(step);
     }
-    return () => clearInterval(interval);
+
+    return () => cancelAnimationFrame(animationFrameId);
   }, [autoScroll]);
 
   return (
