@@ -39,6 +39,11 @@ function TimelinePage({ goBack, audioRef, isPlaying, togglePlay }) {
       <h1 className="app-title">Our Story</h1>
       <Timeline />
 
+       {/* Closing message */}
+      <div className="timeline-end-message">
+        And here's to a lifetime of us together ❤️ Happy Anniversary!
+      </div>
+
       {/* Music controls */}
       <div className="music-controls">
         <button onClick={togglePlay}>

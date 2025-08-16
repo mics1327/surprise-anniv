@@ -248,6 +248,15 @@ body {
   }
 }
 
+.timeline-end-message {
+  text-align: center;
+  font-family: "Great Vibes", cursive; /* same as "Our Story" */
+  font-size: 2rem;
+  color: #444;
+  margin: 60px 0 80px; /* space from timeline items and bottom */
+}
+
+
 /* ===== Very small screens ===== */
 @media (max-width: 420px) {
   .app-title { font-size: 2rem; }
